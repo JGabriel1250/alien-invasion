@@ -1,6 +1,7 @@
 import sys
 import pygame
 from bullet import *
+from alien import Alien
 
 def check_keydown_events(event, al_settings, screen, ship, bullets):
     """Responde a pressionamento de tecla."""
@@ -34,7 +35,7 @@ def check_events(al_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
             
 
-def update_screen(al_settings, screen, ship, alien, bullets):
+def update_screen(al_settings, screen, ship, aliens, bullets):
     # Redesenha a tela a cada passagem pelo
     screen.fill(al_settings.bg_color)
 
@@ -43,7 +44,7 @@ def update_screen(al_settings, screen, ship, alien, bullets):
         bullet.draw_bullet()
 
     ship. blitme()
-    alien.blitme()
+    aliens.draw(screen)
 
     # Deixa a tela mais recente visivel
     pygame.display.flip()
@@ -64,3 +65,22 @@ def fire_bullet(al_settings, screen, ship, bullets):
         if len(bullets) < al_settings.bullets_alowed:
             new_bullet = Bullet(al_settings, screen, ship)
             bullets.add(new_bullet)
+
+def create_fleet(al_settings, screen, aliens):
+    """Cria uma frota completa de alieníginas"""
+    # Cria um alienígina e calcula o número de alieníginas em uma linha
+    # O espaçamento entre os alieníginas é igual á largura de um alienígina
+
+    alien = Alien(al_settings, screen)
+    alien_width = alien.rect.width
+    avaliable_space_x = al_settings.screen_width - 2 * alien_width
+    number_alien_x = int(avaliable_space_x/ (2* alien_width))
+
+    # Cria a primeira linha de alieníginas
+
+    for alien_number in range(number_alien_x):
+        # Cria um alienígina e o posiciona na linha
+        alien = Alien(al_settings, screen)
+        alien.x = alien_width + 2 * alien_width * alien_number
+        alien.rect.x = alien.x
+        aliens.add(alien)
