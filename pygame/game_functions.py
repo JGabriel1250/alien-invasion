@@ -66,21 +66,39 @@ def fire_bullet(al_settings, screen, ship, bullets):
             new_bullet = Bullet(al_settings, screen, ship)
             bullets.add(new_bullet)
 
+
+def get_number_rows(al_settings, ship_height, alien_height):
+    """Determina o número de linhas com alieníginas que cabem na tela"""
+    available_space_y = (al_settings.screen_height - (3 * alien_height) - ship_height)
+    number_rows = int(available_space_y / 2 * alien_height)
+    
+
+def get_number_aliens_x(al_settings, alien_width):
+    """Determina o número de alieníginas que cabem em uma linha."""
+
+    avaliable_space_x = al_settings.screen_width - 2 * alien_width
+    number_alien_x = int(avaliable_space_x/ (2* alien_width))
+    return number_alien_x
+
+
+def create_alien(al_settings, screen, aliens, alien_number):
+    # Cria um alienígina e o posiciona na linha
+    alien = Alien(al_settings, screen)
+    alien_width = alien.rect.width
+    alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.x = alien.x
+    aliens.add(alien)
+
+
 def create_fleet(al_settings, screen, aliens):
     """Cria uma frota completa de alieníginas"""
     # Cria um alienígina e calcula o número de alieníginas em uma linha
     # O espaçamento entre os alieníginas é igual á largura de um alienígina
 
     alien = Alien(al_settings, screen)
-    alien_width = alien.rect.width
-    avaliable_space_x = al_settings.screen_width - 2 * alien_width
-    number_alien_x = int(avaliable_space_x/ (2* alien_width))
+    number_aliens_x = get_number_aliens_x(al_settings,alien.rect.width)
 
     # Cria a primeira linha de alieníginas
 
-    for alien_number in range(number_alien_x):
-        # Cria um alienígina e o posiciona na linha
-        alien = Alien(al_settings, screen)
-        alien.x = alien_width + 2 * alien_width * alien_number
-        alien.rect.x = alien.x
-        aliens.add(alien)
+    for alien_number in range(number_aliens_x):
+        create_alien(al_settings, screen, aliens, alien_number)
