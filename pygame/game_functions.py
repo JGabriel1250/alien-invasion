@@ -68,37 +68,45 @@ def fire_bullet(al_settings, screen, ship, bullets):
 
 
 def get_number_rows(al_settings, ship_height, alien_height):
-    """Determina o número de linhas com alieníginas que cabem na tela"""
+    """Determina o número de linhas com alienígenas que cabem na tela"""
     available_space_y = (al_settings.screen_height - (3 * alien_height) - ship_height)
-    number_rows = int(available_space_y / 2 * alien_height)
+    number_rows = int(available_space_y / (2 * alien_height))
+    return number_rows
     
 
 def get_number_aliens_x(al_settings, alien_width):
-    """Determina o número de alieníginas que cabem em uma linha."""
+    """Determina o número de alienígenas que cabem em uma linha."""
 
     avaliable_space_x = al_settings.screen_width - 2 * alien_width
     number_alien_x = int(avaliable_space_x/ (2* alien_width))
     return number_alien_x
 
 
-def create_alien(al_settings, screen, aliens, alien_number):
+def create_alien(al_settings, screen, aliens, alien_number, row_number):
     # Cria um alienígina e o posiciona na linha
     alien = Alien(al_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.x = alien.x
+    alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     aliens.add(alien)
 
 
-def create_fleet(al_settings, screen, aliens):
-    """Cria uma frota completa de alieníginas"""
-    # Cria um alienígina e calcula o número de alieníginas em uma linha
-    # O espaçamento entre os alieníginas é igual á largura de um alienígina
+def create_fleet(al_settings, screen, ship, aliens):
+    """Cria uma frota completa de alienígenas"""
+    # Cria um alienígina e calcula o número de alienígenas em uma linha
+    # O espaçamento entre os alienígenas é igual á largura de um alienígena
 
     alien = Alien(al_settings, screen)
     number_aliens_x = get_number_aliens_x(al_settings,alien.rect.width)
+    number_row = get_number_rows(al_settings, ship.rect.height, alien.rect.height)
 
     # Cria a primeira linha de alieníginas
 
-    for alien_number in range(number_aliens_x):
-        create_alien(al_settings, screen, aliens, alien_number)
+    for row_number in range(number_row):
+        for alien_number in range(number_aliens_x):
+            create_alien(al_settings, screen, aliens, alien_number, row_number)
+
+def update_alien(aliens):
+    """Atualiza as posições de todos os alienígenas da frota"""
+    aliens.update()

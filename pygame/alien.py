@@ -2,10 +2,10 @@ import pygame
 from pygame.sprite import Sprite
 
 class Alien(Sprite):
-    """uma classe que representa um único alienígina da frota"""
+    """uma classe que representa um único alienígena da frota"""
 
     def __init__(self, al_settings, screen):
-        """Inicializa o alienígina e define sua posição inicial"""
+        """Inicializa o alienígena e define sua posição inicial"""
         super(Alien, self).__init__()
         self.screen = screen
         self.al_settings = al_settings
@@ -24,3 +24,16 @@ class Alien(Sprite):
     def blitme(self):
         """Desenha o alienígena"""
         self.screen.blit(self.image, self.rect)
+
+    def check_edges(self):
+        """Devolve True se o alienígena estiver na borda da tela"""
+        screen_rect = self.screen.get_rect()
+        if self.rect.right >= screen_rect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
+
+    def update(self):
+        """Move o alienígina para a direita  e pra esquerda."""
+        self.x += (self.al_settings.alien_speed_factor * self.al_settings.fleet_direction)
+        self.rect.x = self.x
