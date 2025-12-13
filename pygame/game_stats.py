@@ -1,0 +1,11 @@
+class GameStats():
+    """Armazena dados estatísticos da invasão alienígena."""
+
+    def __init__(self, al_settings):
+        """Inicializa os dados estatísticos."""
+        self.al_settings = al_settings
+        self.reset_stats()
+
+    def reset_stats(self):
+        """Inicializa os dados estatísticos que podem mudar durante o jogo."""
+        self.ship_left = self.al_settings.ship_limit
