@@ -23,7 +23,7 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(al_settings, screen, stats, play_button, ship, bullets):
+def check_events(al_settings, screen, stats, play_button, ship, aliens, bullets):
     """Responde o eventos pressionamento de teclas e de mouse."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -37,13 +37,29 @@ def check_events(al_settings, screen, stats, play_button, ship, bullets):
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(stats, play_button, mouse_x, mouse_y)
+            check_play_bottom(al_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
 
-def check_play_button(stats, play_button, mouse_x, mouse_y):
+def check_play_bottom(al_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
     """Inicia um novo jogo quando o jogador clicar em paly."""
-    if play_button.rect.collidepoint(mouse_x, mouse_y):
+
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+
+    if button_clicked and not stats.game_active:
+        # Oculta o cursor do mouse
+        pygame.mouse.set_visible(False)
+
+        # Reinicia os dados estatísticos do jogo
+        stats.reset_stats()
         stats.game_active = True
-            
+
+        # Esvazia a lista de alienígena e de projéteis
+        aliens.empty()
+        bullets.empty()
+
+        # Cria uma nova frota e centraliza a espaçonave
+        create_fleet(al_settings, screen, ship, aliens)
+        ship.center_ship()
+
 
 def update_screen(al_settings, screen, stats, ship, aliens, bullets, play_button):
     # Redesenha a tela a cada passagem pelo
@@ -84,7 +100,7 @@ def update_bullets(al_settings, screen, ship, aliens, bullets):
 
 def fire_bullet(al_settings, screen, ship, bullets):
     # Cria um novo projétil e o adiciona ao grupo de projéteis
-        if len(bullets) < al_settings.bullets_alowed:
+        if len(bullets) < al_settings.bullets_allowed:
             new_bullet = Bullet(al_settings, screen, ship)
             bullets.add(new_bullet)
 
@@ -165,6 +181,7 @@ def ship_hit(al_settings, stats, screen, ship, aliens, bullets):
 
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 
 def chechk_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets):
