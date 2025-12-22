@@ -62,7 +62,7 @@ def check_play_bottom(al_settings, screen, stats, play_button, ship, aliens, bul
         ship.center_ship()
 
 
-def update_screen(al_settings, screen, stats, ship, aliens, bullets, play_button):
+def update_screen(al_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     # Redesenha a tela a cada passagem pelo
     screen.fill(al_settings.bg_color)
 
@@ -73,6 +73,10 @@ def update_screen(al_settings, screen, stats, ship, aliens, bullets, play_button
     ship. blitme()
     aliens.draw(screen)
 
+    # Desenha a informação sobre pontuação
+    sb.show_score()
+
+    # Desenha o botão Play se o jogo estiver inativo
     if not stats.game_active:
         play_button.draw_button()
 
@@ -186,7 +190,7 @@ def ship_hit(al_settings, stats, screen, ship, aliens, bullets):
         pygame.mouse.set_visible(True)
 
 
-def chechk_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets):
     """Verifica se algum alienígena alcançou a parte inferior da tela."""
     screen_rect = screen.get_rect()
 
@@ -206,4 +210,4 @@ def update_aliens(al_settings, stats, screen, ship, aliens, bullets):
         ship_hit(al_settings, stats, screen, ship, aliens, bullets)
 
     # Verifica se há algum alienígena que atingiu a parte inferior da tela
-    chechk_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets)

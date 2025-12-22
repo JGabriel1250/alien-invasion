@@ -5,8 +5,9 @@ class GameStats():
         """Inicializa os dados estatísticos."""
         self.al_settings = al_settings
         self.reset_stats()
-        self.game_active = False
+        self.game_active = False 
 
     def reset_stats(self):
         """Inicializa os dados estatísticos que podem mudar durante o jogo."""
         self.ship_left = self.al_settings.ship_limit
+        self.score = 0
