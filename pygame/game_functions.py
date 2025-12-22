@@ -51,6 +51,7 @@ def check_play_bottom(al_settings, screen, stats, play_button, ship, aliens, bul
         # Reinicia os dados estatísticos do jogo
         stats.reset_stats()
         stats.game_active = True
+        al_settings.initialize_dynamic_settings()
 
         # Esvazia a lista de alienígena e de projéteis
         aliens.empty()
@@ -92,6 +93,7 @@ def update_bullets(al_settings, screen, ship, aliens, bullets):
     if len(aliens) == 0:
         # Destrói os projéteis existentes e cria uma nova frota
         bullets.empty()
+        al_settings.increase_speed()
         create_fleet(al_settings, screen, ship, aliens)
 
     # Verifica se algum projétil atingiu os alienígenas
