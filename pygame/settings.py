@@ -34,6 +34,9 @@ class Settings():
         self.bullet_speed_factor = 3
         self.alien_speed_factor = 1
 
+        # Pontuação
+        self.alien_points = 50
+
         # fleet_direction igual a 1 representa a direita; -1 representa a esquerda
         self.fleet_direction = 1
 
