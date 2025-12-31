@@ -113,7 +113,7 @@ def check_bullet_alien_collisions(al_settings, screen, stats, sb, ship, aliens, 
             stats.score += al_settings.alien_points
             sb.prep_score()
 
-
+        check_high_score(stats, sb)
 
 
 def fire_bullet(al_settings, screen, ship, bullets):
@@ -223,3 +223,9 @@ def update_aliens(al_settings, stats, screen, ship, aliens, bullets):
 
     # Verifica se há algum alienígena que atingiu a parte inferior da tela
     check_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets)
+
+def check_high_score(stats, sb):
+    """Verifica se há uma nova pontuação máxima"""
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()
