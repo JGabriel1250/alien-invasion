@@ -42,9 +42,10 @@ class Scoreboard():
         self.high_score_rect.top = self.high_score_rect.top
     
     def show_score(self):
-        """Desenha a pontuação na tela"""
+        """Desenha a pontuação e o nível na tela."""
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.screen.blit(self.level_image, self.level_rect)
 
     def prep_level(self):
         """Transforma o nível em uma imagem renderizada"""
