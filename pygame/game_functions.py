@@ -57,6 +57,7 @@ def check_play_bottom(al_settings, screen, stats, sb, play_button, ship, aliens,
         sb.prep_score()
         sb.prep_high_score()
         sb.prep_level()
+        sb.prep_ships()
 
         # Esvazia a lista de alienígena e de projéteis
         aliens.empty()
@@ -189,12 +190,15 @@ def change_fleet_direction(al_settings, aliens):
     al_settings.fleet_direction *= -1
 
 
-def ship_hit(al_settings, stats, screen, ship, aliens, bullets):
+def ship_hit(al_settings , screen, stats, sb, ship, aliens, bullets):
     """Responde ao fato de a espaçonave ter sido atingida por um alienígena"""
 
-    if stats.ship_left > 0:
+    if stats.ships_left > 0:
         # Decrementa ships_left
-        stats.ship_left -= 1
+        stats.ships_left -= 1
+
+        # Atualiza o painel de pontuações
+        sb.prep_ships()
 
         # Esvazia a lista de alienígenas e de projéteis
         aliens.empty()
@@ -212,27 +216,27 @@ def ship_hit(al_settings, stats, screen, ship, aliens, bullets):
         pygame.mouse.set_visible(True)
 
 
-def check_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(al_settings, screen, stats, sb, ship, aliens, bullets):
     """Verifica se algum alienígena alcançou a parte inferior da tela."""
     screen_rect = screen.get_rect()
 
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
-            ship_hit(al_settings, stats, screen, ship, aliens, bullets)
+            ship_hit(al_settings, screen, stats, sb, ship, aliens, bullets)
             break
 
 
-def update_aliens(al_settings, stats, screen, ship, aliens, bullets):
+def update_aliens(al_settings, screen, stats, sb, ship, aliens, bullets):
     """Verifica se a frota está em uma das bordas e então atualiza as posições de todos os alienígenas da frota"""
     check_fleet_edges(al_settings, aliens)
     aliens.update()
     
     # Verifica se houve colisões entre alienígenas e a espaçonave
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(al_settings, stats, screen, ship, aliens, bullets)
+        ship_hit(al_settings, screen, stats, sb, ship, aliens, bullets)
 
     # Verifica se há algum alienígena que atingiu a parte inferior da tela
-    check_aliens_bottom(al_settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(al_settings, screen, stats, sb, ship, aliens, bullets)
 
 def check_high_score(stats, sb):
     """Verifica se há uma nova pontuação máxima"""

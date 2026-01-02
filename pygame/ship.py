@@ -1,8 +1,11 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
-    def __init__(self, screen, al_settings):
+class Ship(Sprite):
+    def __init__(self, al_settings, screen):
         """inicializa a espaçonave e obtém seu rect"""
+        super().__init__()
+
         self.screen = screen
         self.al_settings = al_settings
 
